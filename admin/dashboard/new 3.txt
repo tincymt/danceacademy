@@ -1,0 +1,145 @@
+<?php
+session_start();
+include("dbconnection.php");
+if(isset($_SESSION['username']))
+{
+$temp=$_SESSION['username'];
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  font-family: "Lato", sans-serif;
+}
+
+.sidenav {
+  height: 100%;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.main {
+  margin-left: 160px; /* Same as the width of the sidenav */
+  font-size: 28px; /* Increased text to enable scrolling */
+  padding: 0px 10px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+
+.oval {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 100%;
+}
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.oval :hover {
+  color: cyan;
+}
+.pad{
+
+margin-bottom:300px;
+}
+
+</style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="sidenav">
+<a href style="text-decoration:none;" ="#"><p style="color:blue; width:100px;">
+<?php
+echo $temp;
+?>
+</p></a>
+ <a href="studreg.php" style="font-size: 20px; ">Dashboard</a>
+    <a href="categ.php" style="font-size: 20px; ">Category</a>
+ <a href="#services" style="font-size: 20px; ">Services</a>
+<a href="logout.php" style="font-size: 20px; ">Sign Out</a>
+</div>
+
+  <div id="" class="pad">
+    <form action="studreg.php" method="POST">
+  <table class="table table-striped table-advance table-hover" style="margin:100px 200px;  width:50%; border:3px solid black;">
+   <?php
+  $query = "select * from tbl_customer_reg";
+  $results = mysqli_query($con,$query);
+echo "<h2><center>Customer Registration Table</center></h2>";
+  echo "<tr><th>login_id</th><th>name</th><th>address</th><th>gender</th><th>DOB</th><th>contactno</th><th>email</th><th>dist_name</th><th>state_name</th><th>status</th></tr>";
+  while($fin=mysqli_fetch_array($results))
+  {
+  echo "<tr>";
+  echo "<td>".$fin['login_id']."</td><td>"
+        .$fin['name']."</td><td>"
+    .$fin['address']."</td><td>"
+         .$fin['gender']."</td><td>"
+       .$fin['DOB']."</td><td>"
+       .$fin['contactno']."</td><td>"
+     .$fin['email']."</td><td>"
+     
+
+if($fin['status'] == 0 || $fin['status'] =='')
+{
+
+echo "<a href='view.php?x=" .$fin['login_id']." '>verify</a>";
+}
+else
+{
+echo "<a href='view.php?y=" .$fin['login_id']." '>verified</a>
+</td>";
+}
+
+echo "</tr>";
+  }
+   ?>
+</table>
+</form>
+</div>
+</body>
+</html>
+<?php
+}
+else
+{
+header("location:login.html");
+}
+?>
